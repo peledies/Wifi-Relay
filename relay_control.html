@@ -1,0 +1,71 @@
+<?php
+session_start();
+if ($_SESSION['loggedIn'] != "true") {
+	 header("Location: index.html");
+}
+
+?>
+<!DOCTYPE html>
+	<title>Wifi Relay</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="apple-touch-icon" href="css/wifi_relay_logo.png" />
+	<link rel="stylesheet" href="css/trontastic/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="js/jquery-1.7.min.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="js/jquery-ui-1.8.16.custom.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+    function changeState(relay, state)
+    {
+		if (relay == 1)
+		{
+			var pulseDuration = $('#relayOnePulse_Duration').val();
+		}
+		else if (relay == 2)
+		{
+			var pulseDuration = $('#relayTwoPulse_Duration').val();
+		}
+		else if (relay == 3)
+		{
+			var pulseDuration = $('#relayThreePulse_Duration').val();
+		}
+		
+ 		$.ajax({
+    		type: "POST",
+    		url: "relays.php",
+    		data:
+				'relay='+relay+
+				'&state='+state+
+				'&pulseDuration='+pulseDuration,
+    		cache: false,
+    		success: function(html){
+    			$("#relayLog").append(html);
+    		}
+    	});		
+    }
+    </script>
+<div id='wrapper'>
+<fieldset id="relay_one" class="button_panel ui-widget ui-widget-content ui-corner-all">
+	<legend>Relay One</legend>
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayOneOn" value="On" id="relayOneOn" onclick="changeState(1,'on')" />
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayOneOff" value="Off" id="relayOneOff" onclick="changeState(1,'off')" /><br /><br />
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayOnePulse" value="Pulse" id="relayOnePulse" onclick="changeState(1,'pulse')" />
+	<input type="text" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all"  name="relayOnePulse_Duration" value="1" size='3' maxlength='3' id="relayOnePulse_Duration" /> Seconds
+</fieldset>
+<br />
+<fieldset id="relay_Two" class="button_panel ui-widget ui-widget-content ui-corner-all">
+	<legend>Relay Two</legend>
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayTwoOn" value="On" id="relayTwoOn" onclick="changeState(2,'on')">
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayTwoOff" value="Off" id="relayTwoOff" onclick="changeState(2,'off')"><br /><br />
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayTwoPulse" value="Pulse" id="relayTwoPulse" onclick="changeState(2,'pulse')">
+	<input type="text" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayTwoPulse_Duration" value="1" size='3' maxlength='3' id="relayTwoPulse_Duration" /> Seconds	
+</fieldset>
+</br>
+<fieldset id="relay_Three" class="button_panel ui-widget ui-widget-content ui-corner-all">
+	<legend>Relay Three</legend>
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayThreeOn" value="On" id="relayThreeOn" onclick="changeState(3,'on')">
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayThreeOff" value="Off" id="relayThreeOff" onclick="changeState(3,'off')"><br /><br />
+	<input type="button" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayThreePulse" value="Pulse" id="relayThreePulse" onclick="changeState(3,'pulse')">
+	<input type="text" class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" name="relayThreePulse_Duration" value="1" size='3' maxlength='3' id="relayThreePulse_Duration" /> Seconds	
+</fieldset>
+</div>
+<? session_destroy(); ?>

@@ -2,12 +2,16 @@ This software is meant to fill a gap between hardware (WF2CC) and a user.
 
 Wifi Relay provides a polished front end for a user to control all three relays on the global cache iTach WF2CC via any modern web browser.
 
-It is specifically targeting the mobile user with support for iPhone, Android, and Windoze mobile
+It is specifically targeted toward the mobile user with support for iPhone, Android, and Windoze mobile.
 
 
 library scope:
-Wifi Relay requires that you have a web server running on the same network as the iTach WF2CC.  You must be able to ping the device from the web server.
+Wifi Relay requires that you have a web server running on the same network as the iTach WF2CC.
+You must be able to ping the device from the web server.
+Your iTach WF2CC must be properly set up and configured to be on your infrastructure network.
 
+
+Server Requirements
 PHP must be installed on the web server with support for fsockopen
 
 
@@ -18,12 +22,16 @@ This library/API contains the following features
 
 A Key pad for a user to enter a PIN for authentication
 PHP session is destroyed onload for security, requiring the user to enter a PIN each time they open the web app.
-Ability to turn ON and OFF any of the three relays
-Ability to perform a momentary ON state or "Pulse" to any of the three relays
+Ability to turn ON and OFF any of the three relays.
+Ability to perform a momentary ON state or "Pulse" to any of the three relays.
+Ability to control the length of the pulse via the user interface.
 
 INSTALLATION:
 Its easy, just copy the files from the repository to your web root.
-Change the default password in the relay.php file.
-Change the IP address to that of the device you want to controll.
+Change the default pin in the login.php file.
+	(default pin is 1234)
+Change the IP address to that of the device you want to control in relays.php.
 
 Thats It!
+
+Enjoy.

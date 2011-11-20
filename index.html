@@ -1,0 +1,133 @@
+<?php
+session_start();
+if ($_SESSION['loggedIn'] == "true") {
+	 header("Location: relay_control.html");
+}
+?>
+<title>Wifi Relay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="css/wifi_relay_logo.png" />
+<link rel="stylesheet" href="css/trontastic/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<style type="text/css" media="screen">
+		html
+		{
+			background-color:#333;
+		}
+		#wrapper
+		{
+			width:300px;
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+		}
+		#pin_feedback
+		{
+			background-color:#888;
+			width:240px;
+			height:45px;
+			font-size:48px;
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+			text-align:center;
+		}
+		#enter_pin
+		{
+			font-size:14px;
+			display:none;
+		}
+		#keypad
+		{
+			width:260px;
+			background-color:#555;
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+		}
+		.digit
+		{
+			//background-color:#ABC;
+			border:1px solid;
+			font-size:45px;
+			height:85px;
+			width:80px;
+			float:left;
+		}
+		.crystal_border
+		{
+			background-color:#444;
+			width:260px;
+			height:55px;
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+			padding:10px 0 0 0;
+			margin-bottom:5px;
+			opacity:0.8;
+		}
+		.button_panel
+		{
+			width:265px;
+		}
+	</style>
+	<script src="js/jquery-1.7.min.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="js/jquery-ui-1.8.16.custom.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+ $(document).ready(function() {
+//initialize jquery ui buttons	
+$("button").button();
+
+$(".digit").click(function() {
+	var value = $(this).html();
+	$('#enter_pin').val($('#enter_pin').val()+value);
+	$('#pin_feedback').html($('#pin_feedback').html()+"*");  
+	var length = $("#enter_pin").val().length;
+	if(length == 4)
+	{
+		var pin = $("#enter_pin").val();  
+			$.ajax({
+				type: "POST",
+				url: "login.php",
+				data: 'pin='+pin,
+				cache: false,
+				success: function(html, status, xhr)
+				{
+					if(xhr.getResponseHeader("ERROR") == 1)
+					{
+						alert("ERROR");
+						$('#enter_pin').val('');
+						$('#pin_feedback').html('');
+					}
+					else
+					{
+						$("#body").html(html);
+					}         
+				}
+			});
+	}
+});
+}); // end of document.ready
+    </script>
+<body id="body" onload="">
+	<div id="wrapper">
+		<div class='crystal_border ui-corner-all'>
+			<div id="pin_feedback" class='ui-corner-all'></div>
+		</div>
+		<input class='ui-widget-shadow ui-corner-all' type="text" maxlength='4' size='3' name="enter_pin" value="" id="enter_pin">
+		<div id="keypad">
+	 	   <div id="one" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>1</div>
+	 	   <div id="two" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>2</div>
+	 	   <div id="three" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>3</div>
+	 	   <div id="four" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>4</div>
+	 	   <div id="five" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>5</div>
+	 	   <div id="six" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>6</div>
+	 	   <div id="seven" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>7</div>
+	 	   <div id="eight" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>8</div>
+	 	   <div id="nine" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>9</div>
+	 	   <div id="blank" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>x</div>
+	 	   <div id="zero" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>0</div>
+	 	   <div id="blank" class='digit ui-widget ui-widget-content ui-corner-all ui-button'>x</div>
+		</div>	
+	</div>
+</body>
